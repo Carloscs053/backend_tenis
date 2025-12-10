@@ -24,6 +24,17 @@ const getHistorial = () => {
   }
 };
 
+const getJugadores = () => {
+  try {
+    let jugadores = DB.jugadores;
+
+    return jugadores;
+  } catch (error) {
+    console.log("Exception");
+    throw { status: 500, message: error };
+  }
+};
+
 const saveToDataBase = (DB) => {
   fs.writeFileSync("./src/databases/db.json", JSON.stringify(DB, null, 2), {
     encoding: "utf8",
@@ -117,4 +128,5 @@ module.exports = {
   deletePendiente,
   postNuevoPartido,
   postNuevoJugador,
+  getJugadores,
 };

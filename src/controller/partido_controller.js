@@ -26,6 +26,19 @@ const getHistorial = (req, res) => {
   }
 };
 
+const getJugadores = (req, res) => {
+  try {
+    const jugadores = partidos_service.getJugadores();
+
+    res.status(200).send({ status: 200, data: jugadores });
+  } catch (error) {
+    res.status(error?.message || error).send({
+      status: "FAILED GETJUGADORES",
+      data: { error: error?.message || error },
+    });
+  }
+};
+
 const postFinalizar = (req, res) => {
   const { pendienteId, torneo, ronda, saque, j1, j2 } = req.body;
   if (!pendienteId || !torneo || !ronda || saque === undefined || !j1 || !j2) {
@@ -143,4 +156,5 @@ module.exports = {
   postFinalizar,
   postNuevoPartido,
   postNuevoJugador,
+  getJugadores,
 };

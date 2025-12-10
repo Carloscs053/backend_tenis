@@ -20,6 +20,16 @@ const getHistorial = () => {
   }
 };
 
+const getJugadores = () => {
+  try {
+    const jugadores = partido.getJugadores();
+
+    return jugadores;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const postFinalizar = (nuevoHistorico) => {
   try {
     const partidoGuardado = partido.postFinalizar(nuevoHistorico);
@@ -77,4 +87,5 @@ module.exports = {
   postFinalizar,
   postNuevoPartido,
   postNuevoJugador,
+  getJugadores,
 };
