@@ -43,7 +43,7 @@ const saveToDataBase = (DB) => {
 
 const deletePendiente = (nuevoHistorico) => {
   const indexPendiente = DB.partidosPendientes.findIndex(
-    (pendiente) => pendiente.pendienteId === nuevoHistorico.historicoId
+    (pendiente) => pendiente.idPartido === nuevoHistorico.idPartido
   );
 
   if (indexPendiente > -1) {
@@ -55,7 +55,7 @@ const deletePendiente = (nuevoHistorico) => {
 const postFinalizar = (nuevoHistorico) => {
   const finalizado =
     DB.historialPartidos.findIndex(
-      (partido) => partido.historicoId === nuevoHistorico.historicoId
+      (partido) => partido.idPartido === nuevoHistorico.idPartido
     ) > -1;
   if (finalizado) {
     throw {
@@ -78,13 +78,13 @@ const postFinalizar = (nuevoHistorico) => {
 const postNuevoPartido = (nuevoPartido) => {
   const partido =
     DB.partidosPendientes.findIndex(
-      (partido) => partido.pendienteId === nuevoPartido.pendienteId
+      (partido) => partido.idPartido === nuevoPartido.idPartido
     ) > -1;
 
   if (partido) {
     throw {
       status: 400,
-      message: `El partido con la id ${partido.pendienteId} ya existe`,
+      message: `El partido con la id ${partido.idPartido} ya existe`,
     };
   } else {
     try {
@@ -103,7 +103,7 @@ const postNuevoJugador = (nuevoJugador) => {
   try {
     const isAlreadyAdded =
       DB.jugadores.findIndex(
-        (jugador) => jugador.nombre === nuevoJugador.nombre
+        (jugador) => jugador.jugadorId === nuevoJugador.jugadorId
       ) > -1;
 
     if (isAlreadyAdded) {

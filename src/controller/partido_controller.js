@@ -40,8 +40,8 @@ const getJugadores = (req, res) => {
 };
 
 const postFinalizar = (req, res) => {
-  const { pendienteId, torneo, ronda, saque, j1, j2 } = req.body;
-  if (!pendienteId || !torneo || !ronda || saque === undefined || !j1 || !j2) {
+  const { idPartido, torneo, ronda, saque, j1, j2 } = req.body;
+  if (!idPartido || !torneo || !ronda || saque === undefined || !j1 || !j2) {
     return res.status(400).send({
       status: "FAILED",
       data: { error: "Faltan datos obligatorios o estructura incorrecta" },
@@ -49,7 +49,7 @@ const postFinalizar = (req, res) => {
   }
 
   if (
-    !j1.jugadorId ||
+    !j1.idPartido ||
     j1.sets === null ||
     j1.sets === undefined ||
     !j2.jugadorId ||
@@ -65,7 +65,7 @@ const postFinalizar = (req, res) => {
   }
 
   const nuevoHistorico = {
-    historicoId: pendienteId,
+    idPartido: idPartido,
     torneo,
     ronda,
     saque,

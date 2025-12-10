@@ -33,7 +33,7 @@ const getJugadores = () => {
 const postFinalizar = (nuevoHistorico) => {
   try {
     const nuevoHistorico = {
-      idPartido: nuevoHistorico.pendienteId,
+      idPartido: nuevoHistorico.idPartido,
       torneo: nuevoHistorico.torneo,
       ronda: nuevoHistorico.ronda,
       saque: nuevoHistorico.saque,
