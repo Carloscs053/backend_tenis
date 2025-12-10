@@ -1,0 +1,157 @@
+{
+  "jugadores": [
+    {
+      "jugadorId": "jugador_001",
+      "nombre": "Carlos",
+      "foto": "la URL"
+    },
+    {
+      "jugadorId": "jugador_002",
+      "nombre": "JL",
+      "foto": "la URL"
+    },
+    {
+      "jugadorId": "jugador_003",
+      "nombre": "Balatro Balatrez",
+      "foto": "la URL"
+    },
+    {
+      "jugadorId": "jugador_004",
+      "nombre": "Pipa",
+      "foto": "la URL"
+    },
+    {
+      "nombre": "Ahmed",
+      "foto": "La foto",
+      "jugadorId": "d4193166-739e-4d4d-9932-ab0954ad2346"
+    }
+  ],
+  "historialPartidos": [
+    {
+      "historicoId": "historico_001",
+      "torneo": "DAM Slam",
+      "ronda": "Fase de Grupos",
+      "saque": false,
+      "j1": {
+        "jugadorId": "jugador_001",
+        "juegos": [
+          6,
+          6
+        ],
+        "sets": 2
+      },
+      "j2": {
+        "jugadorId": "jugador_002",
+        "juegos": [
+          0,
+          0
+        ],
+        "sets": 0
+      }
+    },
+    {
+      "historicoId": "historico_002",
+      "torneo": "DAM Slam",
+      "ronda": "Fase de Grupos",
+      "saque": false,
+      "j1": {
+        "jugadorId": "jugador_003",
+        "juegos": [
+          6,
+          4,
+          7
+        ],
+        "sets": 2
+      },
+      "j2": {
+        "jugadorId": "jugador_004",
+        "juegos": [
+          3,
+          6,
+          5
+        ],
+        "sets": 0
+      }
+    },
+    {
+      "historicoId": "partido_003",
+      "torneo": "DAM Slam",
+      "ronda": "Octavos",
+      "saque": true,
+      "j1": {
+        "jugadorId": "jugador_002",
+        "juegos": [
+          6,
+          6
+        ],
+        "sets": 2
+      },
+      "j2": {
+        "jugadorId": "jugador_004",
+        "juegos": [
+          4,
+          2
+        ],
+        "sets": 0
+      }
+    },
+    {
+      "historicoId": "partido_002",
+      "torneo": "DAM Slam",
+      "ronda": "Octavos",
+      "saque": true,
+      "j1": {
+        "jugadorId": "jugador_002",
+        "juegos": [
+          6,
+          4,
+          6
+        ],
+        "sets": 2
+      },
+      "j2": {
+        "jugadorId": "jugador_004",
+        "juegos": [
+          1,
+          6,
+          4
+        ],
+        "sets": 1
+      }
+    }
+  ],
+  "partidosPendientes": [
+    {
+      "pendienteId": "partido_001",
+      "torneo": "DAM Slam",
+      "ronda": "Octavos",
+      "saque": true,
+      "j1": {
+        "jugadorId": "jugador_002",
+        "juegos": [],
+        "sets": null
+      },
+      "j2": {
+        "jugadorId": "jugador_004",
+        "juegos": [],
+        "sets": null
+      }
+    },
+    {
+      "pendienteId": "1341da67-aa3d-4981-b5d8-37c1f0f3dcac",
+      "torneo": "Copa Davis",
+      "ronda": "Final",
+      "saque": false,
+      "j1": {
+        "jugadorId": "jugador_004",
+        "juegos": [],
+        "sets": null
+      },
+      "j2": {
+        "jugadorId": "jugador_002",
+        "juegos": [],
+        "sets": null
+      }
+    }
+  ]
+}
