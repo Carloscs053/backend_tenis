@@ -32,6 +32,23 @@ const getJugadores = () => {
 
 const postFinalizar = (nuevoHistorico) => {
   try {
+    const nuevoHistorico = {
+      idPartido: nuevoHistorico.pendienteId,
+      torneo: nuevoHistorico.torneo,
+      ronda: nuevoHistorico.ronda,
+      saque: nuevoHistorico.saque,
+      j1: {
+        jugadorId: nuevoHistorico.j1.jugadorId,
+        juegos: nuevoHistorico.j1.juegos,
+        sets: nuevoHistorico.j1.sets,
+      },
+      j2: {
+        jugadorId: nuevoHistorico.j2.jugadorId,
+        juegos: nuevoHistorico.j2.juegos,
+        sets: nuevoHistorico.j2.sets,
+      },
+    };
+
     const partidoGuardado = partido.postFinalizar(nuevoHistorico);
 
     partido.deletePendiente(nuevoHistorico);
@@ -45,7 +62,7 @@ const postFinalizar = (nuevoHistorico) => {
 const postNuevoPartido = (datosPartido) => {
   try {
     const nuevoPendiente = {
-      pendienteId: uuid(),
+      idPartido: uuid(),
       torneo: datosPartido.torneo,
       ronda: datosPartido.ronda,
       saque: datosPartido.saque,

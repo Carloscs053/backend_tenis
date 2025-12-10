@@ -28,101 +28,73 @@
   ],
   "historialPartidos": [
     {
-      "historicoId": "historico_001",
+      "idPartido": "historico_001",
       "torneo": "DAM Slam",
       "ronda": "Fase de Grupos",
       "saque": false,
       "j1": {
         "jugadorId": "jugador_001",
-        "juegos": [
-          6,
-          6
-        ],
+        "juegos": [6, 6],
         "sets": 2
       },
       "j2": {
         "jugadorId": "jugador_002",
-        "juegos": [
-          0,
-          0
-        ],
+        "juegos": [0, 0],
         "sets": 0
       }
     },
     {
-      "historicoId": "historico_002",
+      "idPartido": "historico_002",
       "torneo": "DAM Slam",
       "ronda": "Fase de Grupos",
       "saque": false,
       "j1": {
         "jugadorId": "jugador_003",
-        "juegos": [
-          6,
-          4,
-          7
-        ],
+        "juegos": [6, 4, 7],
         "sets": 2
       },
       "j2": {
         "jugadorId": "jugador_004",
-        "juegos": [
-          3,
-          6,
-          5
-        ],
+        "juegos": [3, 6, 5],
         "sets": 0
       }
     },
     {
-      "historicoId": "partido_003",
+      "idPartido": "partido_003",
       "torneo": "DAM Slam",
       "ronda": "Octavos",
       "saque": true,
       "j1": {
         "jugadorId": "jugador_002",
-        "juegos": [
-          6,
-          6
-        ],
+        "juegos": [6, 6],
         "sets": 2
       },
       "j2": {
         "jugadorId": "jugador_004",
-        "juegos": [
-          4,
-          2
-        ],
+        "juegos": [4, 2],
         "sets": 0
       }
     },
     {
-      "historicoId": "partido_002",
+      "idPartido": "partido_002",
       "torneo": "DAM Slam",
       "ronda": "Octavos",
       "saque": true,
       "j1": {
         "jugadorId": "jugador_002",
-        "juegos": [
-          6,
-          4,
-          6
-        ],
+        "juegos": [6, 4, 6],
         "sets": 2
       },
       "j2": {
         "jugadorId": "jugador_004",
-        "juegos": [
-          1,
-          6,
-          4
-        ],
+        "juegos": [1, 6, 4],
         "sets": 1
       }
     }
   ],
   "partidosPendientes": [
     {
-      "pendienteId": "partido_001",
+      "idPartido": "partido_001",
       "torneo": "DAM Slam",
       "ronda": "Octavos",
       "saque": true,
@@ -138,7 +110,7 @@
       }
     },
     {
-      "pendienteId": "1341da67-aa3d-4981-b5d8-37c1f0f3dcac",
+      "idPartido": "1341da67-aa3d-4981-b5d8-37c1f0f3dcac",
       "torneo": "Copa Davis",
       "ronda": "Final",
       "saque": false,
