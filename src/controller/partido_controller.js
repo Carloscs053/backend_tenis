@@ -70,21 +70,17 @@ const postFinalizar = (req, res) => {
     });
   }
 
-  if (
-    !j1.idPartido ||
-    j1.sets === null ||
-    j1.sets === undefined ||
-    !j2.jugadorId ||
-    j2.sets === null ||
-    j2.sets === undefined
-  ) {
+  if (!j1.jugadorId || !j2.jugadorId) {
     return res.status(400).send({
       status: "FAILED",
       data: {
-        error: "No se puede finalizar un partido sin resultados (sets/juegos)",
+        error: "Faltan IDs de los jugadores",
       },
     });
   }
+
+  const setsJ1 = j1.sets == null || j1.sets === undefined ? 0 : j1.sets;
+  const setsJ2 = j2.sets == null || j2.sets === undefined ? 0 : j2.sets;
 
   const nuevoHistorico = {
     idPartido: idPartido,
@@ -93,13 +89,13 @@ const postFinalizar = (req, res) => {
     saque,
     j1: {
       jugadorId: j1.jugadorId,
-      juegos: j1.juegos,
-      sets: j1.sets,
+      juegos: j1.juegos || [],
+      sets: setsJ1,
     },
     j2: {
       jugadorId: j2.jugadorId,
-      juegos: j2.juegos,
-      sets: j2.sets,
+      juegos: j2.juegos || [],
+      sets: setsJ2,
     },
   };
 
