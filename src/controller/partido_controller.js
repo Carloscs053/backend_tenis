@@ -13,6 +13,28 @@ const getPendientes = (req, res) => {
   }
 };
 
+const getJugadorById = (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  if (!id) {
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "El parámetro ID es obligatorio" },
+    });
+  }
+
+  try {
+    const jugador = partidos_service.getJugadorById(id);
+    res.status(200).send({ status: "OK", data: jugador });
+  } catch (error) {
+    res
+      .status(error?.status || 500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
+  }
+};
+
 const getHistorial = (req, res) => {
   try {
     const historial = partidos_service.getHistorial();
@@ -157,4 +179,5 @@ module.exports = {
   postNuevoPartido,
   postNuevoJugador,
   getJugadores,
+  getJugadorById,
 };

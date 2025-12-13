@@ -121,6 +121,24 @@ const postNuevoJugador = (nuevoJugador) => {
   }
 };
 
+const getJugadorById = (id) => {
+  try {
+    const jugador = DB.jugadores.find((j) => j.jugadorId === id);
+
+    if (!jugador) {
+      throw {
+        status: 404,
+        message: `No se encontró ningún jugador con el id '${id}'`,
+      };
+    }
+
+    return jugador;
+  } catch (error) {
+    if (error.status) throw error;
+    throw { status: 500, message: error?.message || error };
+  }
+};
+
 module.exports = {
   getPendientes,
   getHistorial,
@@ -129,4 +147,5 @@ module.exports = {
   postNuevoPartido,
   postNuevoJugador,
   getJugadores,
+  getJugadorById,
 };

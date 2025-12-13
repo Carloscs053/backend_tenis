@@ -8,7 +8,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-app.use("/api/v1/partidos", v1TenisRouter);
+app.use("/api/v1/tenis", v1TenisRouter);
 
 app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}`);

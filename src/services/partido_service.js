@@ -85,6 +85,15 @@ const postNuevoPartido = (datosPartido) => {
   }
 };
 
+const getJugadorById = (id) => {
+  try {
+    const jugador = partido.getJugadorById(id);
+    return jugador;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const postNuevoJugador = (nuevoJugador) => {
   const jugadorParaInsertar = {
     ...nuevoJugador,
@@ -105,4 +114,5 @@ module.exports = {
   postNuevoPartido,
   postNuevoJugador,
   getJugadores,
+  getJugadorById,
 };
