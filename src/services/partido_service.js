@@ -4,33 +4,47 @@ const { v4: uuid } = require("uuid");
 const getPendientes = () => {
   try {
     const pendientes = partido.getPendientes();
-
     const listaJugadores = partido.getJugadores();
 
-    const pendientesConNombre = pendientes.map((partido) => {
-      const datosJ1 = listaJugadores.find(
-        (j) => j.jugadorId === partido.j1.jugadorId
-      );
-      const datosJ2 = listaJugadores.find(
-        (j) => j.jugadorId === partido.j2.jugadorId
+    console.log(`--- DEBUG BACKEND ---`);
+    console.log(`Total pendientes: ${pendientes.length}`);
+    console.log(`Total jugadores en BD: ${listaJugadores.length}`);
+
+    const pendientesConNombres = pendientes.map((match) => {
+      // Log para ver qué ID estamos buscando
+      console.log(
+        `Buscando J1: ${match.j1.jugadorId} | Buscando J2: ${match.j2.jugadorId}`
       );
 
+      const datosJ1 = listaJugadores.find(
+        (j) => j.jugadorId === match.j1.jugadorId
+      );
+      const datosJ2 = listaJugadores.find(
+        (j) => j.jugadorId === match.j2.jugadorId
+      );
+
+      // Log para ver si los encontró
+      if (!datosJ1) console.log(`❌ NO ENCONTRADO J1 (${match.j1.jugadorId})`);
+      if (!datosJ2) console.log(`❌ NO ENCONTRADO J2 (${match.j2.jugadorId})`);
+
       return {
-        ...partido,
+        ...match,
         j1: {
-          ...partido.j1,
-          nombre: datosJ1 ? datosJ1.nombre : "Desconocido",
+          ...match.j1,
+          nombre: datosJ1 ? datosJ1.nombre : "SIN NOMBRE", // Texto por defecto si falla
           foto: datosJ1 ? datosJ1.foto : "",
         },
         j2: {
-          ...partido.j2,
-          nombre: datosJ2 ? datosJ2.nombre : "Desconocido",
+          ...match.j2,
+          nombre: datosJ2 ? datosJ2.nombre : "SIN NOMBRE",
           foto: datosJ2 ? datosJ2.foto : "",
         },
       };
     });
-    return pendientesConNombre;
+
+    return pendientesConNombres;
   } catch (error) {
+    console.log("Error en service:", error);
     throw error;
   }
 };
