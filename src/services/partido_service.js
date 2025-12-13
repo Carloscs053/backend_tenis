@@ -6,16 +6,7 @@ const getPendientes = () => {
     const pendientes = partido.getPendientes();
     const listaJugadores = partido.getJugadores();
 
-    console.log(`--- DEBUG BACKEND ---`);
-    console.log(`Total pendientes: ${pendientes.length}`);
-    console.log(`Total jugadores en BD: ${listaJugadores.length}`);
-
     const pendientesConNombres = pendientes.map((match) => {
-      // Log para ver qué ID estamos buscando
-      console.log(
-        `Buscando J1: ${match.j1.jugadorId} | Buscando J2: ${match.j2.jugadorId}`
-      );
-
       const datosJ1 = listaJugadores.find(
         (j) => j.jugadorId === match.j1.jugadorId
       );
@@ -23,15 +14,11 @@ const getPendientes = () => {
         (j) => j.jugadorId === match.j2.jugadorId
       );
 
-      // Log para ver si los encontró
-      if (!datosJ1) console.log(`❌ NO ENCONTRADO J1 (${match.j1.jugadorId})`);
-      if (!datosJ2) console.log(`❌ NO ENCONTRADO J2 (${match.j2.jugadorId})`);
-
       return {
         ...match,
         j1: {
           ...match.j1,
-          nombre: datosJ1 ? datosJ1.nombre : "SIN NOMBRE", // Texto por defecto si falla
+          nombre: datosJ1 ? datosJ1.nombre : "SIN NOMBRE",
           foto: datosJ1 ? datosJ1.foto : "",
         },
         j2: {
@@ -44,7 +31,6 @@ const getPendientes = () => {
 
     return pendientesConNombres;
   } catch (error) {
-    console.log("Error en service:", error);
     throw error;
   }
 };
