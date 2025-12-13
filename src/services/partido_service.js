@@ -4,7 +4,32 @@ const { v4: uuid } = require("uuid");
 const getPendientes = () => {
   try {
     const pendientes = partido.getPendientes();
-    return pendientes;
+
+    const listaJugadores = partido.getJugadores();
+
+    const pendientesConNombre = pendientes.map((partido) => {
+      const datosJ1 = listaJugadores.find(
+        (j) => j.jugadorId === partido.j1.jugadorId
+      );
+      const datosJ2 = listaJugadores.find(
+        (j) => j.jugadorId === partido.j2.jugadorId
+      );
+
+      return {
+        ...partido,
+        j1: {
+          ...partido.j1,
+          nombre: datosJ1 ? datosJ1.nombre : "Desconocido",
+          foto: datosJ1 ? datosJ1.foto : "",
+        },
+        j2: {
+          ...partido.j2,
+          nombre: datosJ2 ? datosJ2.nombre : "Desconocido",
+          foto: datosJ2 ? datosJ2.foto : "",
+        },
+      };
+    });
+    return pendientesConNombre;
   } catch (error) {
     throw error;
   }
