@@ -62,8 +62,16 @@ const getJugadores = (req, res) => {
 };
 
 const postFinalizar = (req, res) => {
+  console.log("--- INICIO DE POSTFINALIZAR ---");
   const { idPartido, torneo, ronda, saque, j1, j2 } = req.body;
+
+  // 1. Logs de datos recibidos
+  console.log(
+    `Datos recibidos: ID=${idPartido}, J1=${j1?.jugadorId}, J2=${j2?.jugadorId}`
+  );
+
   if (!idPartido || !torneo || !ronda || saque === undefined || !j1 || !j2) {
+    console.log("❌ Error de validación: Faltan datos básicos");
     return res.status(400).send({
       status: "FAILED",
       data: { error: "Faltan datos obligatorios o estructura incorrecta" },
@@ -71,6 +79,7 @@ const postFinalizar = (req, res) => {
   }
 
   if (!j1.jugadorId || !j2.jugadorId) {
+    console.log("❌ Error de validación: Faltan IDs de jugadores");
     return res.status(400).send({
       status: "FAILED",
       data: {
@@ -100,9 +109,15 @@ const postFinalizar = (req, res) => {
   };
 
   try {
+    console.log("📝 Llamando al servicio para guardar...");
     const partidoFinalizado = partidos_service.postFinalizar(nuevoHistorico);
+
+    console.log("✅ ÉXITO TOTAL: Partido guardado y devuelto.");
     res.status(201).send({ status: "OK", data: partidoFinalizado });
   } catch (error) {
+    // 🔥🔥🔥 ESTO ES LO QUE NECESITAMOS VER 🔥🔥🔥
+    console.error("❌ ERROR EXPLÍCITO EN CONTROLADOR:", error);
+
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
