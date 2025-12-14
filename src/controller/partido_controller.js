@@ -1,145 +1,90 @@
 const partidos_service = require("../services/partido_service");
 
-const getPendientes = (req, res) => {
+const getPendientes = async (req, res) => {
   try {
-    const pendientes = partidos_service.getPendientes();
-
+    const pendientes = await partidos_service.getPendientes();
     res.status(200).send({ status: 200, data: pendientes });
   } catch (error) {
-    res.status(error?.status || 500).send({
-      status: "FAILED GETPENDIENTES",
-      data: { error: error?.message || error },
-    });
+    res
+      .status(500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
-const getJugadorById = (req, res) => {
+// ASYNC AÑADIDO
+const getHistorial = async (req, res) => {
+  try {
+    const historial = await partidos_service.getHistorial();
+    res.status(200).send({ status: 200, data: historial });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
+  }
+};
+
+const getJugadores = async (req, res) => {
+  try {
+    const jugadores = await partidos_service.getJugadores();
+    res.status(200).send({ status: 200, data: jugadores });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
+  }
+};
+
+const getJugadorById = async (req, res) => {
   const {
     params: { id },
   } = req;
-
-  if (!id) {
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "El parámetro ID es obligatorio" },
-    });
-  }
+  if (!id)
+    return res
+      .status(400)
+      .send({ status: "FAILED", data: { error: "ID obligatorio" } });
 
   try {
-    const jugador = partidos_service.getJugadorById(id);
+    const jugador = await partidos_service.getJugadorById(id);
     res.status(200).send({ status: "OK", data: jugador });
   } catch (error) {
     res
-      .status(error?.status || 500)
+      .status(500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
-const getHistorial = (req, res) => {
-  try {
-    const historial = partidos_service.getHistorial();
-
-    res.status(200).send({ status: 200, data: historial });
-  } catch (error) {
-    res.status(error?.message || error).send({
-      status: "FAILED GETHISTORIAL",
-      data: { error: error?.message || error },
-    });
-  }
-};
-
-const getJugadores = (req, res) => {
-  try {
-    const jugadores = partidos_service.getJugadores();
-
-    res.status(200).send({ status: 200, data: jugadores });
-  } catch (error) {
-    res.status(error?.message || error).send({
-      status: "FAILED GETJUGADORES",
-      data: { error: error?.message || error },
-    });
-  }
-};
-
-const postFinalizar = (req, res) => {
-  console.log("--- INICIO DE POSTFINALIZAR ---");
+const postFinalizar = async (req, res) => {
   const { idPartido, torneo, ronda, saque, j1, j2 } = req.body;
 
-  // 1. Logs de datos recibidos
-  console.log(
-    `Datos recibidos: ID=${idPartido}, J1=${j1?.jugadorId}, J2=${j2?.jugadorId}`
-  );
-
-  if (!idPartido || !torneo || !ronda || saque === undefined || !j1 || !j2) {
-    console.log("❌ Error de validación: Faltan datos básicos");
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "Faltan datos obligatorios o estructura incorrecta" },
-    });
+  if (!idPartido || !j1 || !j2) {
+    return res
+      .status(400)
+      .send({ status: "FAILED", data: { error: "Faltan datos" } });
   }
 
-  if (!j1.jugadorId || !j2.jugadorId) {
-    console.log("❌ Error de validación: Faltan IDs de jugadores");
-    return res.status(400).send({
-      status: "FAILED",
-      data: {
-        error: "Faltan IDs de los jugadores",
-      },
-    });
-  }
-
-  const setsJ1 = j1.sets == null || j1.sets === undefined ? 0 : j1.sets;
-  const setsJ2 = j2.sets == null || j2.sets === undefined ? 0 : j2.sets;
-
-  const nuevoHistorico = {
-    idPartido: idPartido,
-    torneo,
-    ronda,
-    saque,
-    j1: {
-      jugadorId: j1.jugadorId,
-      juegos: j1.juegos || [],
-      sets: setsJ1,
-    },
-    j2: {
-      jugadorId: j2.jugadorId,
-      juegos: j2.juegos || [],
-      sets: setsJ2,
-    },
+  const datosParaActualizar = {
+    idPartido,
+    j1: { juegos: j1.juegos, sets: j1.sets },
+    j2: { juegos: j2.juegos, sets: j2.sets },
   };
 
   try {
-    console.log("📝 Llamando al servicio para guardar...");
-    const partidoFinalizado = partidos_service.postFinalizar(nuevoHistorico);
-
-    console.log("✅ ÉXITO TOTAL: Partido guardado y devuelto.");
+    console.log("📝 Guardando en Atlas...");
+    const partidoFinalizado = await partidos_service.postFinalizar(
+      datosParaActualizar
+    );
+    console.log("✅ Guardado en la nube!");
     res.status(201).send({ status: "OK", data: partidoFinalizado });
   } catch (error) {
-    // 🔥🔥🔥 ESTO ES LO QUE NECESITAMOS VER 🔥🔥🔥
-    console.error("❌ ERROR EXPLÍCITO EN CONTROLADOR:", error);
-
+    console.error("❌ Error:", error);
     res
-      .status(error?.status || 500)
+      .status(500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
-const postNuevoPartido = (req, res) => {
+const postNuevoPartido = async (req, res) => {
   const { body } = req;
-  if (
-    !body.torneo ||
-    !body.ronda ||
-    body.saque === undefined ||
-    !body.idJ1 ||
-    !body.idJ2
-  ) {
-    return res.status(400).send({
-      status: "FAILED",
-      data: {
-        error: "Faltan datos obligatorios",
-      },
-    });
-  }
 
   const nuevoPartido = {
     torneo: body.torneo,
@@ -150,35 +95,27 @@ const postNuevoPartido = (req, res) => {
   };
 
   try {
-    const crearNuevoPartido = partidos_service.postNuevoPartido(nuevoPartido);
+    const crearNuevoPartido = await partidos_service.postNuevoPartido(
+      nuevoPartido
+    );
     res.status(201).send({ status: "OK", data: crearNuevoPartido });
   } catch (error) {
     res
-      .status(error?.status || 500)
+      .status(500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
-const postNuevoJugador = (req, res) => {
+const postNuevoJugador = async (req, res) => {
   const { body } = req;
-  if (!body.nombre) {
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "Falta el nombre del jugador" },
-    });
-  }
-
-  const nuevoJugador = {
-    nombre: body.nombre,
-    foto: body.foto || "",
-  };
+  if (!body.nombre) return res.status(400).send({ error: "Falta nombre" });
 
   try {
-    const jugadorCreado = partidos_service.postNuevoJugador(nuevoJugador);
+    const jugadorCreado = await partidos_service.postNuevoJugador(body);
     res.status(201).send({ status: "OK", data: jugadorCreado });
   } catch (error) {
     res
-      .status(error?.status || 500)
+      .status(500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
@@ -186,9 +123,9 @@ const postNuevoJugador = (req, res) => {
 module.exports = {
   getPendientes,
   getHistorial,
+  getJugadores,
+  getJugadorById,
   postFinalizar,
   postNuevoPartido,
   postNuevoJugador,
-  getJugadores,
-  getJugadorById,
 };

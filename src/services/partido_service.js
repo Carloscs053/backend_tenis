@@ -1,132 +1,111 @@
-const partido = require("../databases/partido");
+const Partido = require("../models/Partido");
+const Jugador = require("../models/jugador");
 const { v4: uuid } = require("uuid");
 
-const getPendientes = () => {
+const getPendientes = async () => {
   try {
-    const pendientes = partido.getPendientes();
-    const listaJugadores = partido.getJugadores();
+    const pendientes = await Partido.find({ estado: "pendiente" });
+
+    const listaJugadores = await Jugador.find();
 
     const pendientesConNombres = pendientes.map((match) => {
+      const matchObj = match.toObject();
+
       const datosJ1 = listaJugadores.find(
-        (j) => j.jugadorId === match.j1.jugadorId
+        (j) => j.jugadorId === matchObj.j1.jugadorId
       );
       const datosJ2 = listaJugadores.find(
-        (j) => j.jugadorId === match.j2.jugadorId
+        (j) => j.jugadorId === matchObj.j2.jugadorId
       );
 
       return {
-        ...match,
+        ...matchObj,
         j1: {
-          ...match.j1,
-          nombre: datosJ1 ? datosJ1.nombre : "SIN NOMBRE",
-          foto: datosJ1 ? datosJ1.foto : "",
+          ...matchObj.j1,
+          nombre: datosJ1?.nombre || "N/A",
+          foto: datosJ1?.foto || "",
         },
         j2: {
-          ...match.j2,
-          nombre: datosJ2 ? datosJ2.nombre : "SIN NOMBRE",
-          foto: datosJ2 ? datosJ2.foto : "",
+          ...matchObj.j2,
+          nombre: datosJ2?.nombre || "N/A",
+          foto: datosJ2?.foto || "",
         },
       };
     });
-
     return pendientesConNombres;
   } catch (error) {
     throw error;
   }
 };
 
-const getHistorial = () => {
+const getHistorial = async () => {
   try {
-    const historial = partido.getHistorial();
-
-    return historial;
+    return await Partido.find({ estado: "finalizado" });
   } catch (error) {
     throw error;
   }
 };
 
-const getJugadores = () => {
+const getJugadores = async () => {
   try {
-    const jugadores = partido.getJugadores();
-
-    return jugadores;
+    return await Jugador.find();
   } catch (error) {
     throw error;
   }
 };
 
-const postFinalizar = (nuevoHistorico) => {
+const getJugadorById = async (id) => {
   try {
-    const nuevoRegistroHistorico = {
-      idPartido: nuevoHistorico.idPartido,
-      torneo: nuevoHistorico.torneo,
-      ronda: nuevoHistorico.ronda,
-      saque: nuevoHistorico.saque,
-      j1: {
-        jugadorId: nuevoHistorico.j1.jugadorId,
-        juegos: nuevoHistorico.j1.juegos,
-        sets: nuevoHistorico.j1.sets,
+    return await Jugador.findOne({ jugadorId: id });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const postFinalizar = async (datosPartido) => {
+  try {
+    const partidoActualizado = await Partido.findOneAndUpdate(
+      { idPartido: datosPartido.idPartido },
+      {
+        estado: "finalizado",
+        "j1.juegos": datosPartido.j1.juegos,
+        "j1.sets": datosPartido.j1.sets,
+        "j2.juegos": datosPartido.j2.juegos,
+        "j2.sets": datosPartido.j2.sets,
       },
-      j2: {
-        jugadorId: nuevoHistorico.j2.jugadorId,
-        juegos: nuevoHistorico.j2.juegos,
-        sets: nuevoHistorico.j2.sets,
-      },
-    };
-
-    const partidoGuardado = partido.postFinalizar(nuevoRegistroHistorico);
-
-    partido.deletePendiente(nuevoRegistroHistorico);
-
-    return partidoGuardado;
+      { new: true }
+    );
+    return partidoActualizado;
   } catch (error) {
     throw error;
   }
 };
 
-const postNuevoPartido = (datosPartido) => {
+const postNuevoPartido = async (datosPartido) => {
   try {
-    const nuevoPendiente = {
+    const nuevoPartido = new Partido({
       idPartido: uuid(),
       torneo: datosPartido.torneo,
       ronda: datosPartido.ronda,
       saque: datosPartido.saque,
-      j1: {
-        jugadorId: datosPartido.idJ1,
-        juegos: [],
-        sets: null,
-      },
-      j2: {
-        jugadorId: datosPartido.idJ2,
-        juegos: [],
-        sets: null,
-      },
-    };
-
-    const partidoCreado = partido.postNuevoPartido(nuevoPendiente);
-    return partidoCreado;
+      estado: "pendiente",
+      j1: { jugadorId: datosPartido.idJ1, juegos: [], sets: 0 },
+      j2: { jugadorId: datosPartido.idJ2, juegos: [], sets: 0 },
+    });
+    return await nuevoPartido.save();
   } catch (error) {
     throw error;
   }
 };
 
-const getJugadorById = (id) => {
+const postNuevoJugador = async (nuevoJugador) => {
   try {
-    const jugador = partido.getJugadorById(id);
-    return jugador;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const postNuevoJugador = (nuevoJugador) => {
-  const jugadorParaInsertar = {
-    ...nuevoJugador,
-    jugadorId: uuid(),
-  };
-  try {
-    const jugadorCreado = partido.postNuevoJugador(jugadorParaInsertar);
-    return jugadorCreado;
+    const jugador = new Jugador({
+      jugadorId: uuid(),
+      nombre: nuevoJugador.nombre,
+      foto: nuevoJugador.foto,
+    });
+    return await jugador.save();
   } catch (error) {
     throw error;
   }
