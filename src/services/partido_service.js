@@ -57,7 +57,7 @@ const getJugadores = () => {
 
 const postFinalizar = (nuevoHistorico) => {
   try {
-    const nuevoHistorico = {
+    const nuevoRegistroHistorico = {
       idPartido: nuevoHistorico.idPartido,
       torneo: nuevoHistorico.torneo,
       ronda: nuevoHistorico.ronda,
@@ -74,9 +74,9 @@ const postFinalizar = (nuevoHistorico) => {
       },
     };
 
-    const partidoGuardado = partido.postFinalizar(nuevoHistorico);
+    const partidoGuardado = partido.postFinalizar(nuevoRegistroHistorico);
 
-    partido.deletePendiente(nuevoHistorico);
+    partido.deletePendiente(nuevoRegistroHistorico);
 
     return partidoGuardado;
   } catch (error) {

@@ -48,7 +48,6 @@ const deletePendiente = (nuevoHistorico) => {
 
   if (indexPendiente > -1) {
     DB.partidosPendientes.splice(indexPendiente, 1);
-    console.log(`Partido borrado de pendientes (Index: ${indexPendiente})`);
   }
 };
 
