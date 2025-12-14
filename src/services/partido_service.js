@@ -1,5 +1,5 @@
 const Partido = require("../models/Partido");
-const Jugador = require("../models/jugador");
+const Jugador = require("../models/Jugador");
 const { v4: uuid } = require("uuid");
 
 const getPendientes = async () => {
