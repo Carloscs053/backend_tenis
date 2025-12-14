@@ -8,6 +8,11 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
+app.use((req, res, next) => {
+  console.log(`🔔 [PORTERO] Petición recibida: ${req.method} ${req.url}`);
+  next(); // IMPORTANTE: Deja pasar a la siguiente fase
+});
+
 app.use("/api/v1/tenis", v1TenisRouter);
 
 app.listen(PORT, () => {
