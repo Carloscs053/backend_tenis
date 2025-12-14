@@ -9,7 +9,8 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-const MONGO_URI = "mongodb+srv://root:root@cluster-tenis.vnb5v64.mongodb.net/";
+const MONGO_URI =
+  "mongodb+srv://root:root@cluster-tenis.vnb5v64.mongodb.net/tenisDB";
 
 mongoose
   .connect(MONGO_URI)
